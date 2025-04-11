@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: white;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 100;
+            background-color: #141414;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .sign-in-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 8px 17px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .signup-form {
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 60px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .signup-form h1 {
+            margin-bottom: 28px;
+            font-size: 2rem;
+        }
+
+        .signup-form input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+
+        .signup-form button {
+            width: 100%;
+            padding: 16px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .signup-form button:hover {
+            background-color: #f40612;
+        }
+
+        .login-link {
+            color: #737373;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            .signup-form {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo" class="logo">
+        <a href="index.html" class="sign-in-btn">Sign In</a>
+    </header>
+
+    <div class="signup-container">
+        <form class="signup-form" id="signupForm">
+            <h1>Sign Up</h1>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Confirm Password" required>
+            <button type="submit">Sign Up</button>
+            <div class="login-link">
+                <span>Already have an account? </span>
+                <a href="index.html">Sign in now.</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real app, you would validate the form and send data to server
+            // For this demo, we'll just redirect to browse page
+            window.location.href = 'browse.html';
+        });
+
+        // Add this to your signup.html script
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    if (email) {
+        document.querySelector('input[type="email"]').value = decodeURIComponent(email);
+    }
+};
+    </script>
+</body>
+</html>

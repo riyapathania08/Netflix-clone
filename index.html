@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: white;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            transition: background-color 0.3s;
+        }
+
+        .header.scrolled {
+            background-color: #141414;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .sign-in-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 8px 17px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #f40612;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent 0%, #141414 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .email-signup {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-signup input {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .email-signup button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            transition: background-color 0.2s;
+        }
+
+        .email-signup button:hover {
+            background-color: #f40612;
+        }
+
+        /* Sign In Page */
+        .signin-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signin-container {
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 60px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .signin-container h1 {
+            margin-bottom: 28px;
+            font-size: 2rem;
+        }
+
+        .signin-form input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+
+        .signin-form button {
+            width: 100%;
+            padding: 16px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .signin-form button:hover {
+            background-color: #f40612;
+        }
+
+        .remember-help {
+            display: flex;
+            justify-content: space-between;
+            color: #b3b3b3;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .remember-help a {
+            color: #b3b3b3;
+            text-decoration: none;
+        }
+
+        .remember-help a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-now {
+            color: #737373;
+            margin-top: 16px;
+        }
+
+        .signup-now a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .signup-now a:hover {
+            text-decoration: underline;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+
+            .email-signup {
+                flex-direction: column;
+            }
+
+            .email-signup input {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+
+            .email-signup button {
+                border-radius: 4px;
+                padding: 12px;
+            }
+
+            .signin-container {
+                padding: 40px 20px;
+                margin: 0 20px;
+            }
+        }
+        .faq {
+            padding: 50px;
+            background-color: #000;
+        }
+
+        .faq h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            margin-bottom: 10px;
+        }
+
+        .faq-question {
+            width: 100%;
+            background-color: #2d2d2d;
+            color: white;
+            border: none;
+            text-align: left;
+            padding: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background-color: #414141;
+        }
+        .faq-answer {
+            background-color: #2d2d2d;
+            padding: 20px;
+            display: none;
+            border-top: 1px solid #000;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo and Sign In Button -->
+    <header class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo" class="logo">
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Unlimited movies, TV shows and more</h1>
+            <h2>Watch anywhere. Cancel anytime.</h2>
+            <p>Ready to watch? Enter your email to create or restart your membership.</p>
+            <form class="email-signup" id="emailForm">
+                <input type="email" placeholder="Email address" required>
+                <button type="submit">Get Started ></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Change this in your signin-container div -->
+
+
+    <!-- Sign In Page (Hidden by default) -->
+    <div class="signin-page" id="signinPage">
+        <div class="signin-container">
+            <span class="close-btn" id="closeSignIn">&times;</span>
+            <h1>Sign In</h1>
+            <form class="signin-form">
+                <input type="email" placeholder="Email or phone number" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+                <div class="remember-help">
+                    <div>
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#">Need help?</a>
+                </div>
+            </form>
+            <div class="signup-now">
+                <span>New to Netflix? </span>
+                <a href="signup.html">Sign up now.</a> 
+            </div>
+        </div>
+    </div>
+     <!-- FAQ Section -->
+     <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question">
+                    What is Netflix?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.
+                    <br><br>
+                    You can watch as much as you want, whenever you want without a single commercial – all for one low monthly price. There's always something new to discover and new TV shows and movies are added every week!
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    How much does Netflix cost?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from ₹149 to ₹649 a month. No extra costs, no contracts.
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Where can I watch?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    Watch anywhere, anytime. Sign in with your Netflix account to watch instantly on the web at netflix.com from your personal computer or on any internet-connected device that offers the Netflix app, including smart TVs, smartphones, tablets, streaming media players and game consoles.
+                    <br><br>
+                    You can also download your favorite shows with the iOS, Android, or Windows 10 app. Use downloads to watch while you're on the go and without an internet connection. Take Netflix with you anywhere.
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    How do I cancel?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    Netflix is flexible. There are no annoying contracts and no commitments. You can easily cancel your account online in two clicks. There are no cancellation fees – start or stop your account anytime.
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            // Toggle sign in page
+            function toggleSignInPage() {
+                const signinPage = document.getElementById('signinPage');
+                signinPage.style.display = signinPage.style.display === 'flex' ? 'none' : 'flex';
+            }
+        
+            // Handle email form submission
+            // Update the email form submission handler
+document.getElementById('emailForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Redirect to signup page with the email as parameter
+    const email = document.querySelector('.email-signup input').value;
+    window.location.href = `signup.html?email=${encodeURIComponent(email)}`;
+});
+        
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        
+            // FAQ functionality
+            function setupFAQ() {
+                const questions = document.querySelectorAll('.faq-question');
+                questions.forEach(question => {
+                    question.addEventListener('click', () => {
+                        const answer = question.nextElementSibling;
+                        const icon = question.querySelector('.faq-icon');
+                        
+                        if (answer.classList.contains('show')) {
+                            answer.classList.remove('show');
+                            icon.textContent = '+';
+                        } else {
+                            answer.classList.add('show');
+                            icon.textContent = '×';
+                        }
+                    });
+                });
+            }
+            
+        
+            // Event listeners
+            document.getElementById('signInBtn').addEventListener('click', toggleSignInPage);
+            document.getElementById('closeSignIn').addEventListener('click', toggleSignInPage);
+        
+            // Initialize FAQ functionality
+            setupFAQ();
+        </script>
